@@ -13,14 +13,19 @@ body {
 }
 
 .snake {
-    padding: 0.2px;
+    margin: 1px;
     border: 1px dotted green;
     background-color: green;
 }
 
 .food {
+    margin: 1px;
     border: 1px dotted red;
     background-color: red;
+}
+
+.score-border-1 {
+    background-color: #eee;
 }
 
 #score-border {
