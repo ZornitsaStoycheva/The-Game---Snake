@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+
+}
+
+.scores {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.snake {
+    border: 1px dotted #5543ad;
+    background-color: #5543ad;
+}
+
+.food {
+    border: 1px dotted green;
+}
+
+#score-border {
+    display: grid;
+    grid-template-columns: repeat(20, 20px);
+    grid-template-rows: repeat(20, 20px);
+    border: 5px solid #ccc;
+}
