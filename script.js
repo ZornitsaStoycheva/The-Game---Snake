@@ -1,9 +1,13 @@
 const scoreBorder = document.getElementById('score-border');
+const containerStart = document.getElementById('start');
+const score = document.getElementById('score');
+const highScoreContainer = document.getElementById('high-score');
 
 const gridSize = 20;
 let snake = [{ x: 10, y: 10 }];
 let food = generateFood();
-let direction = '';
+let highScore = 0;
+let direction = 'right';
 let gameInterval;
 let gameSppedDelay = 200;
 let gameStarting;
@@ -12,6 +16,7 @@ function graw() {
     scoreBorder.innerHTML = '';
     drawSnake();
     drawFood();
+    updateScore();
 }
 
 function drawSnake() {
@@ -33,12 +38,14 @@ function setPosition(element, position) {
     element.style.gridRow = position.y;
 }
 
-graw();
+//graw();
 
 function drawFood() {
+    if(gameStarting) {
     const foodElement = createGameElement('div', 'food');
     setPosition(foodElement, food);
     scoreBorder.appendChild(foodElement);
+    }
 }
 
 function generateFood() {
@@ -48,7 +55,7 @@ function generateFood() {
 }
 
 function move() {
-    const head = { ...snake(0)}
+    const head = { ...snake[0]}
     switch (direction) {
         case 'up':
         head.y--;
@@ -70,10 +77,11 @@ function move() {
     if( head.x === food.x && head.y === food.y) {
         food = generateFood();
         increaseSpeed();
-        clearInterval();
+        clearInterval(gameInterval);
         gameInterval = setInterval(() => {
+            console.log(gameSppedDelay)
             move();
-            draw();
+            graw();
         }, gameSppedDelay);
     } else {
         snake.pop();
@@ -87,15 +95,17 @@ function move() {
 
 function startGame() {
     gameStarting = true;
+    containerStart.style.display = 'none';
     gameInterval = setInterval(() => {
         move();
-        draw();
+        checkCollision();
+        graw();
     }, gameSppedDelay)
 }
 
 function headKeyPress(event) {
-    if((!gameStarting && event.code === 'space') ||
-    (!gameStarting && event.code === ' ')) {
+    if((!gameStarting && event.code === 'Space') ||
+    (!gameStarting && event.key === ' ')) {
         startGame()
     } else {
         switch(event.key) {
@@ -123,5 +133,53 @@ function increaseSpeed() {
         gameSppedDelay -= 5;
     } else if (gameSppedDelay > 100) {
         gameSppedDelay -= 3;
+    } else if (gameSppedDelay > 50) {
+        gameSppedDelay -= 2;
+    } else if (gameSppedDelay > 25) {
+        gameSppedDelay -= 1;
     }
+}
+
+function checkCollision() {
+    const head = snake[0];
+
+    if(head.x < 1 || head.x > gridSize || head.y < 1 || head.y > gridSize) {
+        resetGame();
+    }
+
+    for(let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+            resetGame();
+        }
+    }
+}
+
+function resetGame() {
+    updateHighScore();
+    stopGame();
+    snake = [{ x:10, y: 10 }];
+    food = generateFood();
+    direction = 'right';
+    gameSppedDelay = 200;
+    updateScore();
+}
+
+function updateScore() {
+    const currentScore = snake.length - 1;
+    score.textContent = currentScore.toString().padStart(3, '0')
+}
+
+function stopGame() {
+    clearInterval(gameInterval);
+    gameStarting = false;
+    containerStart.style.display = 'block';
+}
+
+function updateHighScore() {
+    const currentScore = snake.length - 1;
+    if(currentScore > highScore) {
+        highScore = currentScore; 
+        highScoreContainer.textContent = highScore.toString().padStart(3, '0')
+    }
+    highScoreContainer.style.display = 'block';
 }

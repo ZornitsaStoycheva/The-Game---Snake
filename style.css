@@ -13,12 +13,14 @@ body {
 }
 
 .snake {
-    border: 1px dotted #5543ad;
-    background-color: #5543ad;
+    padding: 0.2px;
+    border: 1px dotted green;
+    background-color: green;
 }
 
 .food {
-    border: 1px dotted green;
+    border: 1px dotted red;
+    background-color: red;
 }
 
 #score-border {
@@ -26,4 +28,19 @@ body {
     grid-template-columns: repeat(20, 20px);
     grid-template-rows: repeat(20, 20px);
     border: 5px solid #ccc;
+    position: relative;
+}
+
+#start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#start img,
+#start #logo {
+    width: 300px;
+    position: absolute;
+    top: 300px;
+    right: 610px;
 }
