@@ -9,7 +9,7 @@ let food = generateFood();
 let highScore = 0;
 let direction = 'right';
 let gameInterval;
-let gameSppedDelay = 200;
+let gameSppedDelay = 500;
 let gameStarting;
 
 function graw() {
@@ -81,6 +81,7 @@ function move() {
         gameInterval = setInterval(() => {
             console.log(gameSppedDelay)
             move();
+            checkCollision();
             graw();
         }, gameSppedDelay);
     } else {
@@ -157,10 +158,10 @@ function checkCollision() {
 function resetGame() {
     updateHighScore();
     stopGame();
-    snake = [{ x:10, y: 10 }];
+    snake = [{ x: 10, y: 10 }];
     food = generateFood();
     direction = 'right';
-    gameSppedDelay = 200;
+    gameSppedDelay = 400;
     updateScore();
 }
 
